@@ -1,0 +1,34 @@
+<ul class="flex items-center tex-sm font-medium h-full w-full py-3 block justify-between md:w-1/2">
+    <div>
+        <li class="mx-4 sm:hidden">
+            <a href="{% url 'core:home' %}">
+                EF
+            </a>
+        </li>
+    </div>
+    <div class="flex flex-row items-center">
+        {% if user.is_authenticated %}
+            <li class="mx-4 sm:mx-8 md:mx-2 lg:mx-4">
+                <a href="{% url 'notices:create' %}">
+                    <span class="cursor-pointer border rounded hover:border-blue-600 px-1 block">
+                        편집자 구하기
+                        <i class="fas fa-plus"></i>
+                    </span>
+                </a>
+            </li>
+            <li class="hover:underline mx-4 sm:mx-8 md:mx-2 lg:mx-4"><a href="{% url 'contracts:list' %}">
+                    내 계약
+            </a></li>
+            <li class="mx-4 sm:mx-8 md:mx-2 lg:mx-4"><a href="{% url 'users:profile'%}">
+                {% include "mixins/user_avatar.html" with user=user h_and_w='h-12 w-12' md_h_and_md_w='md:w-12 md:h-12' lg_h_and_lg_w='lg:w-12 lg:h-12'%}
+                {% if user.count_unanswered_suggestions_and_answers != 0 %}
+                    <span class="text-red-600">({{user.count_unanswered_suggestions_and_answers}})</span>
+                {% endif %}
+            </a></li>
+            <li class="text-sm border border-gray-700 rounded mx-4 sm:mx-8 md:mx-2 lg:mx-4"><a class="" href="{% url 'users:logout' %}">Log out</a></li>
+        {% else %}
+            <li class="hover:underline mx-4 sm:mx-8 md:mx-2 lg:mx-4"><a href="{% url 'users:login' %}">Login</a></li>
+            <li class="hover:underline mx-4 sm:mx-8 md:mx-2 lg:mx-4"><a href="{% url 'users:signup' %}">Sign Up</a></li>
+        {% endif %}
+    </div>
+</ul>

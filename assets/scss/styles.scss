@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.nav_link {
+    @apply ml-8 border-b-2 border-white h-full flex items-center ;
+    a {
+        @apply py-10 px-5 ;
+    }
+    &:hover {
+        @apply border-gray-600 ;
+    }
+}
+.input {
+    transition: border 0.2s ease-in-out;
+    min-width: 280px
+}
+
+.input:focus+.label,
+.input:active+.label,
+.input.filled+.label {
+    font-size: .75rem;
+    transition: all 0.2s ease-out;
+    top: -0.1rem;
+    color: #667eea;
+}
+
+.label {
+    transition: all 0.2s ease-out;
+    top: 0.4rem;
+      left: 0;
+}

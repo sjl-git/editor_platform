@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block  pagename %}
+    My Contracts
+{% endblock pagename %}
+{% block  content %}
+    <div class="container mx-auto flex flex-col lg:flex-row justify-between">
+        <div class="lg:w-1/2 m-5">
+            <span class="text-lg mx-3" ><span class="text-xl font-bold">{{user}}</span> 님이 고용한 편집자들</span>
+            {% for contract in contracts %}
+                <div class="py-5 bg-white px-6 my-3 rounded-lg shadow-md hover:shadow-lg h-1/2">
+                    <div class= "flex flex-row">
+                        <div class="items-center">
+                            {% include "mixins/user_avatar.html" with user=contract.editor lg_h_and_lg_w='lg:h-20 lg:w-20' mx='ml-5'%}
+                        </div>
+                        <div class="flex flex-col w-full">
+                            <div class="flex flex-row justify-between">
+                                <div>
+                                    <span class="ml-5 text-xl">{{contract.editor}}</span>
+                                    <a class=" ml-3 text-xs cursor-pointer bg-orange-600 hover:bg-orange-500 shadow-xl px-2 py-1 inline-block text-orange-100 hover:text-white rounded" href="{% url 'careers:detail' contract.editor.pk %}">경력</a>
+                                </div>     
+                                <div>
+                                    <span class="">편당: {{contract.cost}} 원</span>
+                                </div>
+                            </div>
+                            <div class="mt-5 ml-5">
+                                <a href="{% url 'projects:list' contract.pk %}" class="bg-black text-white text-sm rounded px-1 mr-1">프로젝트</a>
+                                프로젝트: /{{contract.projects.count}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="lg:w-1/2 m-5">
+            <span class="text-lg mx-3"><span class="text-xl font-bold">{{user}}</span> 님을 고용한 고용자들</span>
+            {% for contract in editor_contracts %}
+                <div class="py-5 bg-white px-6 my-3 rounded-lg shadow-md hover:shadow-lg h-1/2">
+                    <div class= "flex flex-row">
+                        <div class="items-center">
+                            {% include "mixins/user_avatar.html" with user=contract.employer lg_h_and_lg_w='lg:h-20 lg:w-20' mx='ml-5'%}
+                        </div>
+                        <div class="flex flex-col w-full">
+                            <div class="flex flex-row justify-between">
+                                <div>
+                                    <span class="ml-5 text-xl"><span>{{contract.employer}}</span></span>
+                                    <a class=" ml-3 text-xs cursor-pointer bg-orange-600 hover:bg-orange-500 shadow-xl px-2 py-1 inline-block text-orange-100 hover:text-white rounded" href="{% url 'careers:detail' contract.employer.pk %}">경력</a>
+                                    <div class="block ml-5">
+                                        <span ><i class="fab fa-youtube text-red-600 text-lg"></i></span>
+                                        <span>{{contract.employer.youtube_name}}</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="">편당: {{contract.cost}} 원</span>
+                                </div>
+                            </div>
+                            <div class="mt-5 ml-5">
+                                <a href="{% url 'projects:list' contract.pk %}" class="bg-black text-white text-sm rounded px-1 mr-1">프로젝트</a>
+                                <span>0/{{contract.projects.count}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

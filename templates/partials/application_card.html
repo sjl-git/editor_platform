@@ -1,0 +1,58 @@
+<div class="{{sm_w|default:'sm:w-1/4'}} {{md_w|default:''}} {{lg_w|default:''}} w-full p-2 overflow-hidden">
+    {% if from_profile %}
+        {% if application.suggestion %}
+            {% if application.suggestion.has_answer %}
+                {% if application.suggestion.answer.answer %}
+                    <i class="far fa-check-circle text-teal-400 text-2xl"></i>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'suggestions:detail' application.suggestion.pk %}">
+                    <i class="fas fa-bell text-3xl text-red-500"></i>
+                </a>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    <div class="bg-white px-6 py-8 rounded-lg shadow-md hover:shadow-lg relative flex flex-col">
+        {% if application.applicant == user %}
+            <a class="absolute right-0 mr-5" href="{% url 'applications:delete' application.pk %}?next={{ request.path }}"><i class="fas fa-trash-alt text-xl"></i></a>
+        {% endif %}
+        <div class="flex justify-center">
+            {% if from_profile %}
+                {% include "mixins/user_avatar.html" with user=application.notice.employer lg_h_and_lg_w=lg_h_and_lg_w%}
+            {% else %}
+                {% include "mixins/user_avatar.html" with user=application.applicant h_and_w='h-32 w-32' md_h_and_md_w='md:h-32 md:w-32' lg_h_and_lg_w='lg:h-32 lg:w-32' %}
+            {% endif %}
+        </div>
+        <span class="text-center text-lg text-gray-800">{{application.applicant.username}}</span>
+        <div class="mx-auto">
+            <span class="text-xs text-gray-500">편당 가격 :</span>
+            <span>{{application.cost}}</span>
+            <span class="text-xs text-gray-500">원</span>
+        </div>
+        <div class="mx-auto">
+            <span class="text-xs text-gray-500">나이 :</span>
+            <span>{{application.applicant.get_age}}
+            <span class="text-xs text-gray-500">세<span>
+        </div>
+        <div class="flex flex-row justify-around my-5">
+            <div>
+                <span class="font-light text-sm">계약</span>
+            </div>
+            <div>
+                <span class="font-light text-sm">영상 작업</span>
+            </div>
+        </div>
+        <div class="text-center mt-5 -mb-5 flex justify-around">
+            <div>
+                {% if notice.employer == user or application.applicant == user %}
+                    <a class="text-xs bg-gray-700 hover:bg-gray-600 shadow-xl px-5 py-2 inline-block text-blue-100 hover:text-white rounded" href="{% url 'applications:detail' application.pk %}">자세히</a>
+                {% endif %}
+            </div>
+            {% if not from_profile %}
+                <div>
+                    <a class="text-xs cursor-pointer bg-orange-600 hover:bg-orange-500 shadow-xl px-5 py-2 inline-block text-orange-100 hover:text-white rounded" href="{% url 'careers:detail' application.applicant.pk %}">경력</a>
+                </div>        
+            {% endif %}
+        </div>
+    </div>
+</div>

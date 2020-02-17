@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block  pagename %}
+    About Notice
+{% endblock pagename %}
+{% block  content %}
+{% load static %}
+    <div class="container w-1/2 mx-auto flex flex-col justify-center mb-10">
+        <video style="width: 1080px; height: 540px;" controls controlsList="nodownload">
+            <source src="{{application.video.url}}">
+            No source
+        </video>
+        <div class="text-center">
+            <div class="mb-10">
+                <span class="text-lg font-bold text-teal-400">{{application.applicant}}</span>
+                <span class="text-sm"> 님의 편당 희망 가격 : </span>
+                <span class="text-lg font-bold text-teal-400">{{application.cost}}</span>
+                <span class="text-sm">원</span>
+            </div>
+            {% if user == application.notice.employer %}
+                {% if application.suggestion %}
+                    {% if application.suggestion.has_answer %}
+                        {{application.suggestion.cost}}를 거절했습니다 다지 제안하겠습니까?
+                    {% else %}
+                        {{application.suggestion.cost}}에 제의하셨습니다 바꾸시겠습니까?
+                    {% endif %}
+                {% endif %}
+                <form class="mt-10 w-1/2 mx-auto" method="POST" action="{% url 'suggestions:create' application.notice.employer.pk application.applicant.pk application.pk %}">
+                    {% csrf_token %}
+                    <div class="flex flex-wrap items-stretch w-full mb-4 relative">
+                        <div class="flex -mr-px">
+                            <span class="flex items-center leading-normal bg-grey-lighter rounded rounded-r-none border border-r-0 border-grey-light px-3 whitespace-no-wrap text-grey-dark text-sm">￦</span>
+                        </div>				
+                        <input type="number" class="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 border-grey-light px-3 relative" name="cost">
+                        <div class="flex -mr-px">
+                            <span class="flex items-center leading-normal bg-grey-lighter rounded rounded-l-none border border-l-0 border-grey-light px-3 whitespace-no-wrap text-grey-dark text-sm">원</span>
+                        </div>
+                    </div>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2  border rounded-full">
+                        제의
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

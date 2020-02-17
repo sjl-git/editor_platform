@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title> {% block pagename %}{% endblock pagename %} | EF</title>
+</head>
+
+<body class="bg-yellow-gray">
+    <div class="h-screen">
+        {% include "partials/nav2.html" with contract=contract %}
+        <div class="relative container max-w-full flex flex-col-reverse">
+            <div class="lg:absolute lg:right-0 lg:mr-5 lg:top-0 border-4 border-black mt-10 w-full lg:w-2/5 h-screen bg-orange-100 fixed relative flex flex-col p-5 overflow-auto mb-10 rounded-lg shadow hover:shadow-md">
+                <h1 class="text-center bg-white px-10 py-2 rounded-full w-full">메세지</h1>
+                <div class="my-5"></div>
+                {% for comment in messages %}
+                    <div class="flex my-1{% if comment.user.pk == user.pk %} text-right flex-row-reverse{% endif %}">
+                        {% if comment.user == user %}       
+                            <a href="{% url 'contracts:delete_message' comment.pk %}?next={{request.path}}"><i class="fas fa-trash-alt text-xs mx-1 text-red-600"></i></a>
+                        {% endif %}
+                        {% include "mixins/user_avatar.html" with user=comment.user lg_h_and_lg_w='lg:w-10 lg:h-10' h_and_w='h-10 w-10' mx='mx-2' md_h_and_md_w='md:w-10 md:h-10' %}
+                        <div class="mt-px bg-orange-100 rounded w-4/5 flex-col flex flex-col">
+                            <span class="text-lg px-1">{{comment.message}}</span>
+                            <span class="text-xs font-medium text-gray-600">{{comment.created|date:'Y-m-d H:i'}}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+                <form class="w-auto mx-auto flex flex-col relative bottom-0 mb-3 mt-5" method="POST">
+                    {% csrf_token %}
+                    <div class="border bg-white rounded pb-2 pl-3">
+                    <input class="pb-10 px-10 pt-5 w-full focus:outline-none" name="message" placeholder="Write a Message" required />
+                    <button class="mx-auto cursor-pointer bg-red-600 hover:bg-red-500 shadow-xl px-5 py-2 inline-block text-orange-100 hover:text-white rounded">Send Comment</button>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div class="mt-5 flex flex-row items-center">
+                    <div>
+                        <span class="ml-10 text-2xl font-bold">
+                            {{contract.employer}}
+                        </span>
+                        <span class="text-2xl">
+                            님과 
+                        </span>
+                        <span class="text-2xl font-bold">
+                            {{contract.editor}}
+                        </span>
+                        <span class="text-2xl">
+                            의 프로젝트
+                        </span>
+                    </div>
+                    <div>
+                        <a class="px-2 block px-4 py-1 md:p-2 lg:px-4" href="{% url 'projects:create_project' contract.pk %}">
+                            <i class="fas fa-plus p-2 bg-black hover:bg-blue-600 text-white rounded-full"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="mx-5 lg:w-3/5 lg:flex lg:flex-wrap">
+                    {% for project in projects %}
+                        <div class="w-full lg:w-2/5 m-3">
+                        <a href="{% url 'projects:detail' project.pk %}">
+                            <div class="hover:shadow-xl rounded-xl h-32 mx-auto p-5 m-5 bg-orange-100 shadow">
+                                <div class="text-center">
+                                    <span class="block text-xl">
+                                        {{project.name}}
+                                    </span>
+                                </div>
+                                <div class="flex flex-row justify-between">
+                                <div>
+                                <span class="block text-xs ml-5 text-gray-600">
+                                    {{project.created|date:"m-d - Y"}}
+                                </span>
+                                </div>
+                                    <div>
+                                        <a class="mx-auto bg-black text-white rounded-lg px-2 py-1 text-xs" href="{% url 'projects:delete_project' project.pk %}?next={{request.path}}">삭제</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                            <div class="mx-5 -mt-20 bg-white h-32 py-3 rounded-xl flex justify-between overflow-auto">
+                                <div>
+                                    {% if project.files.all %}
+                                        {% for file in project.files.all %}
+                                            <div class="ml-10">
+                                                <span class="text-sm mr-2">⌙ {{file.get_source_name}}</span>
+                                                <a href="{{file.source.url}}" download><i class="fas fa-download text-xs"></i></a>
+                                                {% if user == project.contract.employer %}
+                                                    <a href="{% url 'projects:delete_project_file' file.pk %}?next={{request.path}}"><i class="fas fa-trash-alt text-sm mx-1 text-red-600"></i></a> 
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="flex">
+                                    <form method="POST" enctype="multipart/form-data" action="{% url 'projects:upload_files' project.pk %}">
+                                        {% csrf_token %}
+                                        <label for="ex_file" class="mr-3" style="cursor:pointer;"><i class="fas fa-upload text-blue-700"></i></label>
+                                        <input style="display:none;" type="file" id="ex_file" name="upload_file">
+                                        <button class="bg-black text-white rounded-lg px-2 py-1 mt-3 text-xs" tpye="submit">추가</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "partials/footer.html" %}
+</body>
+
+</html>

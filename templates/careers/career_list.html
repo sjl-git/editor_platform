@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block  pagename %}
+    {{user_obj.first_name}}'s profile
+{% endblock pagename %}
+{% block  content %}
+    <div class="container w-4/5 mx-auto flex flex-col sm:flex-row flex-between my-5 list-none text-center">
+        <div class="w-1/2 border pt-5 pb-32 mx-3 mb-5 sm:mb-0">
+            {% for career in applicant_career %}
+                <li>{{career.user}}님(편집자)은 {{career.employer}}님(고용자)과 {{career.number}}번 일했다</li>
+            {% endfor %}
+        </div>
+        <div class="w-1/2 border pt-5 pb-32 mx-3">
+            {% for career in employer_career %}
+                <li>{{career.employer}}님(고용자)은 {{career.user}}님(편집자)과 {{career.number}}번 일했다</li>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

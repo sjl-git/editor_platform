@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block  pagename %}
+    Home
+{% endblock pagename %}
+{% block filter %}
+<div class="mb-2">
+<form method="GET" action="{% url 'notices:list' %}">
+    {% csrf_token %}
+    <div>
+        <button class="bg-transparent hover:border-blue-600 font-semibold border-2 px-1 focus:outline-none rounded-full mr-2">장르로 검색</button>
+        {% for g in form.genre %}
+        {{g}}
+        {% endfor %}
+    </div>
+</form>
+</div>
+{% endblock filter %}
+{% block  content %}
+    {% load static %}
+    <div class="mx-5">
+        <div class="flex flex-col sm:flex-row flex-wrap">
+            {% for notice in notices %}
+                {% include "partials/notice_card.html" with notice=notice h_and_w='h-32 w-32' md_h_and_md_w='md:w-32 md:h-32' lg_h_and_lg_w='lg:w-32 lg:h-32' %}
+            {% endfor %}
+        </div>
+        <h5>
+        <div class="flex justify-center">
+        {% if page_obj.has_previous %}
+            <a class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 ml-0 rounded-l hover:bg-gray-200" href = "?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        <span class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 ml-0 rounded-l">
+            {{page_obj.number}} / {{page_obj.paginator.num_pages}}
+        </span>
+        {% if page_obj.has_next %}
+            <a class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 ml-0 rounded-l hover:bg-gray-200" href = "?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+        </div>
+        </h5>
+    </div>
+{% endblock content %}

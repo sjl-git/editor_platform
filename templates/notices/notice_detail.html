@@ -44,11 +44,7 @@
                     <a class="mt-5 w-full py-1 mx-auto text-center cursor-pointer bg-blue-600 hover:bg-blue-700 shadow-xl inline-block text-white rounded-full" href="{% url 'applications:apply' notice.pk %}">apply</a>
                 {% endif %}
             </div>
-            <div class="w-full mb-5 md:mt-10 md:w-2/3">
-                <video class="bg-black w-full h-280px sm:h-360px lg:h-480px xl:h-540px rounded" controls controlsList="nodownload">
-                    <source src="{{notice.video.video.url}}">
-                </video>
-            </div>
+            {% include "mixins/videoplayer.html" with notice=notice %}
         </div>
         <span class="bg-yellow-600 text-white rounded px-4 py-2 font-medium" >{{notice.applications.count}} application{{notice.applications.count|pluralize}}</span>
         <div class="mb-5 mt-2 h-px w-full bg-gray-400"></div>

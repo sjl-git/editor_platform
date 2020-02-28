@@ -19,7 +19,7 @@
         </div>
         <div class="xl:w-1/2 my-10">
             <div class="ml-10">
-                <h1 class="text-3xl font-bold text-gray-700">{{user_obj.first_name}} 님의 공지</h1>
+                <h1 id="jsTest" class="text-3xl font-bold text-gray-700">{{user_obj.first_name}} 님의 공지</h1>
             </div>
             <div class="mt-5 flex flex-wrap">
                 {% for notice in user_obj.notices.all %}

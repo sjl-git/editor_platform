@@ -8,7 +8,7 @@ from users import models as user_models
 
 class HomeView(View):
     def get(self, request):
-        sample = models.Notice.objects.all()[:8]
+        sample = models.Notice.objects.all()[:4]
         return render(request, "notices/home.html", {"sample": sample})
 
 

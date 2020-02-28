@@ -15,7 +15,10 @@
     <div class="h-screen">
         {% include "partials/nav2.html" with contract=contract %}
         <div class="relative container max-w-full flex flex-col-reverse">
-            <div class="lg:absolute lg:right-0 lg:mr-5 lg:top-0 border-4 border-black mt-10 w-full lg:w-2/5 h-screen bg-orange-100 fixed relative flex flex-col p-5 overflow-auto mb-10 rounded-lg shadow hover:shadow-md">
+            <div id="">
+                <span id="jsMessageBtn">뽀잉</span>
+            </div>
+            <div id="jsMessageContainer" class="hidden lg:absolute lg:right-0 lg:mr-5 lg:top-0 border-4 border-black mt-10 w-full lg:w-2/5 h-screen bg-orange-100 fixed relative flex flex-col p-5 overflow-auto mb-10 rounded-lg shadow hover:shadow-md">
                 <h1 class="text-center bg-white px-10 py-2 rounded-full w-full">메세지</h1>
                 <div class="my-5"></div>
                 {% for comment in messages %}
@@ -62,26 +65,26 @@
                 </div>
                 <div class="mx-5 lg:w-3/5 lg:flex lg:flex-wrap">
                     {% for project in projects %}
-                        <div class="w-full lg:w-2/5 m-3">
-                        <a href="{% url 'projects:detail' project.pk %}">
+                        <div class="w-full lg:w-2/5 m-3"> 
                             <div class="hover:shadow-xl rounded-xl h-32 mx-auto p-5 m-5 bg-orange-100 shadow">
                                 <div class="text-center">
-                                    <span class="block text-xl">
-                                        {{project.name}}
-                                    </span>
+                                    <a href="{% url 'projects:detail' project.pk %}">
+                                        <span class="block text-xl">
+                                            {{project.name}}
+                                        </span>
+                                    </a>
                                 </div>
                                 <div class="flex flex-row justify-between">
-                                <div>
-                                <span class="block text-xs ml-5 text-gray-600">
-                                    {{project.created|date:"m-d - Y"}}
-                                </span>
-                                </div>
+                                    <div>
+                                        <span class="block text-xs ml-5 text-gray-600">
+                                            {{project.created|date:"m-d - Y"}}
+                                        </span>
+                                    </div>
                                     <div>
                                         <a class="mx-auto bg-black text-white rounded-lg px-2 py-1 text-xs" href="{% url 'projects:delete_project' project.pk %}?next={{request.path}}">삭제</a>
                                     </div>
                                 </div>
                             </div>
-                        </a>
                             <div class="mx-5 -mt-20 bg-white h-32 py-3 rounded-xl flex justify-between overflow-auto">
                                 <div>
                                     {% if project.files.all %}
@@ -112,6 +115,7 @@
         </div>
     </div>
     {% include "partials/footer.html" %}
+    <script src="/static/js/main.js"></script>
 </body>
 
 </html>

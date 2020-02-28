@@ -20,51 +20,50 @@
             {% endif %}
         {% endfor %}
     {%endif%}
-    <a href="{% url 'notices:detail' notice.pk %}">
-        <div class="rounded shadow-md hover:shadow-lg relative bg-white p-5">
-            {% if from_profile %}
-                <a class="absolute right-0 mr-5" href="{% url 'notices:delete' notice.pk %}?next={{ request.path }}"><i class="fas fa-trash-alt text-xl"></i></a>
-            {% endif %}
+    <div class="rounded shadow-md hover:shadow-lg relative bg-white p-5">
+        {% if from_profile %}
+            <div id="jsNoticeTrash">
+                <i class="fas fa-trash-alt text-xl"></i>
+                <span id="noticeId" class="hidden">{{notice.id}}</span>
+            </div>
+        {% endif %}
+        <div>
+            {% include "mixins/user_avatar.html" with user=notice.employer %}
+        </div>
+        <span class="block text-center text-lg text-gray-800">{{notice.employer.username}}</span>
+        <div class="block text-center mt-1 mb-1 mx-auto text-sm">
+            <span ><i class="fab fa-youtube text-red-600 text-lg"></i></span>
+            <span>{{notice.employer.youtube_name}}</span>
+        </div>
+        <li class="block text-center text-xs mx-auto list-none">
+            편집주기 : 
+            <span class="text-lg">
+                {{notice.edited_length}}
+            </span>
+            일
+        </li>
+        <li class="block text-center text-xs mx-auto list-none">
+            남은 기간 :
+            <span class="text-lg">
+                {{notice.deadline}}
+            </span>
+            일
+        </li>
+        <div class="flex flex-row justify-around my-5">
             <div>
-                {% include "mixins/user_avatar.html" with user=notice.employer %}
+                <span class="font-light text-sm">고용</span>
             </div>
-            <span class="block text-center text-lg text-gray-800">{{notice.employer.username}}</span>
-            <div class="block text-center mt-1 mb-1 mx-auto text-sm">
-                <span ><i class="fab fa-youtube text-red-600 text-lg"></i></span>
-                <span>{{notice.employer.youtube_name}}</span>
-            </div>
-            <li class="block text-center text-xs mx-auto list-none">
-                편집주기 : 
-                <span class="text-lg">
-                    {{notice.edited_length}}
-                </span>
-                일
-            </li>
-            <li class="block text-center text-xs mx-auto list-none">
-                남은 기간 :
-                <span class="text-lg">
-                    {{notice.deadline}}
-                </span>
-                일
-            </li>
-            <div class="flex flex-row justify-around my-5">
-                <div>
-                    <span class="font-light text-sm">고용</span>
-                </div>
-                <div>
-                    <span class="font-light text-sm">영상 구매</span>
-                </div>
-            </div>
-            {% if from_profile %}
-                <div class="text-center my-3">
-                    <a class="text-xs bg-gray-700 hover:bg-gray-600 shadow-xl px-5 py-2 inline-block text-blue-100 hover:text-white rounded" href="{% url 'notices:detail' notice.pk %}">자세히</a>
-                </div>
-            {% endif %}
-            <div class="flex flex-wrap justify-around list-none mt-5 -mb-3">
-                {% for g in notice.genre.all %}
-                    <span class="font-light text-sm text-blue-600">#{{g}}</span>
-                {% endfor %}
+            <div>
+                <span class="font-light text-sm">영상 구매</span>
             </div>
         </div>
-    </a>
+        <div class="text-center my-3">
+            <a class="text-xs bg-gray-700 hover:bg-gray-600 shadow-xl px-5 py-2 inline-block text-blue-100 hover:text-white rounded" href="{% url 'notices:detail' notice.pk %}">자세히</a>
+        </div>
+        <div class="flex flex-wrap justify-around list-none mt-5 -mb-3">
+            {% for g in notice.genre.all %}
+                <span class="font-light text-sm text-blue-600">#{{g}}</span>
+            {% endfor %}
+        </div>
+    </div>
 </div>

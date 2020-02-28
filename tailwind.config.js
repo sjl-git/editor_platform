@@ -20,6 +20,11 @@ module.exports = {
   },
   variants: {
     backgroundColor: ['responsive', 'hover', 'focus', 'active'],
+    transitionTimingFunction: ['responsive', 'hover', 'focus'],
+    opacity: ['responsive', 'hover', 'focus', 'active', 'group-hover'],
+    transitionDuration: ['responsive', 'hover', 'focus'],
+    display: ['responsive', 'hover', 'focus', 'group-hover'],
+
   },
   plugins: []
 }
